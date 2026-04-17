@@ -1,0 +1,4 @@
+@media(max-width:900px){.wgrid{grid-template-columns:repeat(3,minmax(0,1fr))}.agenda-cal{width:230px}}
+@media(max-width:700px){.agenda-wrap{flex-direction:column}.agenda-cal{width:100%;border-right:none;border-bottom:1px solid var(--border)}.kanban-board{flex-direction:column;min-width:unset}.k-col{width:100%}}
+@media(max-width:600px){.wgrid{grid-template-columns:1fr 1fr}.hdr,.weekly-stats,.weekly-top,.weekly-grid-wrap,.kanban-wrap,.agenda-list{padding-left:1rem;padding-right:1rem}.nav-tabs .nav-tab span{display:none}}
+@media(max-width:420px){.wgrid{grid-template-columns:1fr}}

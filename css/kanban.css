@@ -1,0 +1,58 @@
+/* ════ KANBAN ════ */
+.kanban-wrap{padding:1rem 1.25rem 2rem;flex:1;overflow-x:auto;overflow-y:auto}
+.kanban-board{display:flex;gap:12px;min-width:max-content;align-items:flex-start}
+.k-col{width:268px;flex-shrink:0;display:flex;flex-direction:column}
+.k-col-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg) var(--r-lg) 0 0;border-bottom:none}
+.k-col-title{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600}
+.k-col-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.k-col-count{font-size:10px;color:var(--text3);background:var(--bg4);padding:1px 7px;border-radius:10px}
+.k-col-body{
+  background:var(--bg2);border:1px solid var(--border);
+  border-top:2px solid transparent;border-radius:0 0 var(--r-lg) var(--r-lg);
+  padding:6px;display:flex;flex-direction:column;gap:5px;
+  min-height:140px;transition:background .15s;
+}
+.k-col-body.drag-over{background:var(--bg3);border-color:var(--blue-bd)}
+.k-todo   .k-col-body{border-top-color:var(--text3)}
+.k-doing  .k-col-body{border-top-color:var(--amber)}
+.k-review .k-col-body{border-top-color:var(--blue)}
+.k-done   .k-col-body{border-top-color:var(--green)}
+
+/* Kanban card */
+.k-card{touch-action:none;
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);
+  padding:10px 12px;cursor:grab;transition:all .15s;
+  animation:fi .18s ease;user-select:none;
+}
+.k-card:active{cursor:grabbing}
+@keyframes fi{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+.k-card:hover{background:var(--bg4);border-color:var(--border2)}
+.k-card.dragging{opacity:.4;cursor:grabbing;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.k-card.done-card .k-card-title{text-decoration:line-through;color:var(--text3)}
+.k-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+.k-card-title{font-size:12px;font-weight:500;color:var(--text);line-height:1.4;flex:1}
+.k-card-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.k-card-due{font-size:10px;display:flex;align-items:center;gap:3px}
+.k-card-due.ok{color:var(--text3)}
+.k-card-due.soon{color:var(--amber)}
+.k-card-due.overdue{color:var(--red)}
+.k-card-due svg{width:9px;height:9px;stroke:currentColor;fill:none}
+.tag{font-size:10px;font-weight:500;padding:1px 6px;border-radius:4px;white-space:nowrap}
+.tag-reuniao{background:var(--blue-bg);color:#93C5FD}
+.tag-alinhamentos{background:var(--teal-bg);color:#5EEAD4}
+.tag-tarefas{background:var(--purple-bg);color:#D8B4FE}
+.tag-urgente{background:var(--red-bg);color:#FCA5A5}
+.tag-outro{background:var(--bg4);color:var(--text2)}
+
+/* drag ghost placeholder */
+.k-placeholder{
+  border:2px dashed var(--blue-bd);border-radius:var(--r);
+  background:var(--blue-bg);height:56px;
+  animation:ph .15s ease;
+}
+@keyframes ph{from{opacity:0}to{opacity:1}}
+
+.k-add-btn{margin-top:5px;padding:7px;background:none;border:1px dashed var(--bg5);border-radius:var(--r);color:var(--text3);font-family:inherit;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s;width:100%}
+.k-add-btn:hover{border-color:var(--blue-bd);color:var(--blue);background:var(--blue-bg)}
+.k-add-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+.k-empty{padding:16px 10px;text-align:center;color:var(--text3);font-size:11px}

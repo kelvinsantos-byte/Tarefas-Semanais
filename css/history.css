@@ -1,0 +1,42 @@
+/* ════ HISTÓRICO VIEW ════ */
+.hist-view-wrap{padding:1rem 1.25rem 2rem;flex:1;overflow-y:auto}
+.hist-week-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.hist-wk-chip{
+  padding:5px 14px;border-radius:16px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-size:11px;font-weight:500;
+  cursor:pointer;transition:all .15s;font-family:inherit;white-space:nowrap;
+}
+.hist-wk-chip:hover{border-color:var(--blue-bd);color:var(--blue);background:var(--blue-bg)}
+.hist-wk-chip.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.hist-wk-chip.curr-wk{border-color:var(--green-bd)}
+
+/* Gerencial de prazo */
+.hist-gerencial{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;
+  margin-bottom:1.25rem;
+}
+.ger-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px}
+.ger-val{font-size:26px;font-weight:600;line-height:1;margin-bottom:4px}
+.ger-lbl{font-size:11px;color:var(--text2)}
+.ger-bar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:8px}
+.ger-bar-fill{height:100%;border-radius:2px;transition:width .5s}
+
+.hist-tasks-hdr{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.hist-task-row{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r);margin-bottom:5px;
+}
+.hist-task-title{flex:1;font-size:12px;font-weight:500;color:var(--text);text-decoration:line-through;color:var(--text3)}
+.hist-task-badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.badge-ontime{background:var(--green-bg);color:#86EFAC}
+.badge-late{background:var(--red-bg);color:#FCA5A5}
+.badge-nodue{background:var(--bg4);color:var(--text3)}
+.hist-task-date{font-size:10px;color:var(--text3);white-space:nowrap;flex-shrink:0}
+.hist-empty{text-align:center;color:var(--text3);font-size:12px;padding:2rem;display:flex;flex-direction:column;align-items:center;gap:8px}
+.hist-empty svg{width:32px;height:32px;stroke:currentColor;fill:none;opacity:.3}
+
+@media(max-width:600px){
+  .hist-gerencial{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hist-view-wrap{padding:.75rem 1rem 1rem}
+}

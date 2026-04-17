@@ -1,0 +1,25 @@
+/* ── APP ── */
+.app{display:flex;flex-direction:column;min-height:100vh}
+.hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 1.25rem;height:52px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:200}
+.hdr-logo img{height:28px;object-fit:contain}
+.hdr-sep{width:1px;height:18px;background:var(--border2)}
+.hdr-space{flex:1}
+.nav-tabs{display:flex;gap:2px;background:var(--bg3);border-radius:var(--r);padding:3px}
+.nav-tab{padding:5px 14px;border-radius:6px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;border:none;background:none;font-family:inherit}
+.nav-tab svg{width:13px;height:13px}
+.nav-tab.active{background:var(--bg5);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.nav-tab:hover:not(.active){color:var(--text)}
+.wk-badge{display:flex;align-items:center;gap:7px;background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:16px;padding:3px 12px 3px 9px}
+.wk-badge .wn{font-size:18px;font-weight:600;color:var(--blue);line-height:1}
+.wk-badge .wl{font-size:9px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.05em}
+.wk-badge .wy{font-size:9px;color:rgba(147,197,253,.6)}
+.ibt{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:var(--bg3);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:all .15s}
+.ibt:hover{background:var(--bg4);color:var(--text)}
+.ibt svg{width:13px;height:13px}
+.notif{background:rgba(245,158,11,.1);border-bottom:1px solid rgba(245,158,11,.2);padding:7px 1.25rem;display:flex;align-items:center;gap:8px;font-size:12px;color:#FCD34D}
+.notif svg{width:13px;height:13px;fill:var(--amber);flex-shrink:0}
+.notif-btn{margin-left:auto;font-size:11px;font-weight:600;color:var(--amber);cursor:pointer;text-decoration:underline;white-space:nowrap}
+
+/* ── VIEWS ── */
+.view{display:none;flex:1}
+.view.active{display:flex;flex-direction:column}

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WorkTrack">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="https://res.cloudinary.com/doo0fzoef/image/upload/v1775095045/Intelig%C3%AAncia_Metal_rkkbgd.png">
+<title>WorkTrack — Inteligência Operacional</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Estilos -->
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/setup.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/kanban.css">
+<link rel="stylesheet" href="css/agenda.css">
+<link rel="stylesheet" href="css/weekly.css">
+<link rel="stylesheet" href="css/modal.css">
+<link rel="stylesheet" href="css/notes.css">
+<link rel="stylesheet" href="css/history.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+
+<!-- APP -->
+<div class="app" id="appEl" style="display:none">
+  <header class="hdr">
+    <div class="hdr-logo">
+      <img src="https://res.cloudinary.com/doo0fzoef/image/upload/v1775095045/Intelig%C3%AAncia_Metal_rkkbgd.png" alt="IO" style="height:28px;object-fit:contain" onerror="this.style.display='none'">
+    </div>
+    <div class="hdr-sep"></div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-view="kanban" onclick="switchView('kanban')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="11" rx="1"/></svg>
+        <span>Board</span>
+      </button>
+      <button class="nav-tab" data-view="agenda" onclick="switchView('agenda')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Agenda</span>
+      </button>
+      <button class="nav-tab" data-view="weekly" onclick="switchView('weekly')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <span>Semana</span>
+      </button>
+      <button class="nav-tab" data-view="notes" onclick="switchView('notes')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M11 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-5"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <span>Notas</span>
+      </button>
+      <button class="nav-tab" data-view="hist" onclick="switchView('hist')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Histórico</span>
+      </button>
+    </div>
+    <div class="hdr-space"></div>
+    <div class="wk-badge">
+      <div class="wn" id="wkNum">—</div>
+      <div><div class="wl">semana</div><div class="wy" id="wkYear"></div></div>
+    </div>
+    <div style="display:flex;gap:5px;margin-left:8px">
+      <button class="ibt" onclick="openHistory()" title="Histórico (H)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </button>
+      <button class="ibt" onclick="openAdd(null,null)" title="Nova tarefa (N)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 4v16m8-8H4"/></svg>
+      </button>
+
+    </div>
+  </header>
+
+  <div id="notifBar" style="display:none" class="notif">
+    <svg viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-5-5.917V4a1 1 0 10-2 0v1.083A6 6 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+    <span>Ative notificações para lembretes</span>
+    <span class="notif-btn" onclick="enableNotif()">Ativar agora</span>
+  </div>
+
+  <!-- BOARD -->
+  <div class="view active" id="view-kanban">
+    <div class="kanban-wrap">
+      <div class="kanban-board" id="kanbanBoard">
+        <div class="loading" style="width:100%"><div class="spinner"></div> Carregando...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENDA -->
+  <div class="view" id="view-agenda">
+    <div class="agenda-wrap">
+      <div class="agenda-cal">
+        <div class="cal-nav">
+          <button class="cal-btn" onclick="calPrev()">‹</button>
+          <span class="cal-month" id="calMonth">—</span>
+          <button class="cal-btn" onclick="calNext()">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <div class="agenda-list" id="agendaList">
+        <div class="loading"><div class="spinner"></div> Carregando...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <div class="view" id="view-hist">
+    <div class="hist-view-wrap">
+      <div class="hist-week-chips" id="histWeekChips">
+        <div class="loading" style="padding:.5rem"><div class="spinner"></div></div>
+      </div>
+      <div id="histContent">
+        <div class="hist-empty">
+          <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Selecione uma semana para ver o histórico
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTAS -->
+  <div class="view" id="view-notes">
+    <div class="notes-wrap">
+      <div class="notes-sidebar">
+        <div class="notes-sidebar-hdr">
+          <span class="notes-sidebar-title">Notas</span>
+          <button class="note-add-btn" onclick="newNote()" title="Nova nota">
+            <svg viewBox="0 0 24 24" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>
+          </button>
+        </div>
+        <div class="notes-list" id="notesList">
+          <div class="note-empty-sidebar">Nenhuma nota ainda</div>
+        </div>
+      </div>
+      <div class="notes-editor" id="notesEditor">
+        <div class="notes-empty" id="notesEmpty">
+          <svg viewBox="0 0 24 24"><path d="M11 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-5"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Selecione uma nota ou crie uma nova
+        </div>
+        <div id="noteEditorContent" style="display:none;flex:1;display:none;flex-direction:column;overflow:hidden">
+          <div class="notes-editor-hdr">
+            <input class="note-title-input" id="noteTitleInput" placeholder="Título da nota" oninput="schedNoteSave()">
+            <span class="note-save-indicator" id="noteSaveIndicator"></span>
+            <button class="note-del-btn" onclick="deleteNote()" title="Excluir nota">
+              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+          <div class="note-body">
+            <textarea class="note-textarea" id="noteBodyInput" placeholder="Comece a escrever..." oninput="schedNoteSave()"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEMANA -->
+  <div class="view" id="view-weekly">
+    <div class="weekly-top">
+      <div>
+        <div class="wnav-range" id="wRange">—</div>
+        <div class="wnav-sub" id="wSub"></div>
+      </div>
+      <div class="nav-btns">
+        <span class="today-pill" id="todayPill" onclick="goToday()" style="display:none">← Hoje</span>
+        <button class="nav-btn" onclick="chWeek(-1)">‹</button>
+        <button class="nav-btn" onclick="chWeek(1)">›</button>
+      </div>
+    </div>
+    <div class="weekly-stats">
+      <div class="wstat"><div class="wstat-dot" style="background:var(--blue)"></div><div><div class="wstat-val" id="sTotal">0</div><div class="wstat-lbl">total</div></div></div>
+      <div class="wsep"></div>
+      <div class="wstat"><div class="wstat-dot" style="background:var(--green)"></div><div><div class="wstat-val" id="sDone" style="color:var(--green)">0</div><div class="wstat-lbl">concluídas</div></div></div>
+      <div class="wsep"></div>
+      <div class="wstat"><div class="wstat-dot" style="background:var(--red)"></div><div><div class="wstat-val" id="sLate" style="color:var(--red)">0</div><div class="wstat-lbl">atrasadas</div></div></div>
+      <div class="wsep"></div>
+      <div class="wstat"><div class="wstat-dot" style="background:var(--amber)"></div><div><div class="wstat-val" id="sPend" style="color:var(--amber)">0</div><div class="wstat-lbl">pendentes</div></div></div>
+      <div class="wsep"></div>
+      <div class="wpbar"><div class="wpbar-track"><div class="wpbar-fill" id="pFill" style="width:0%"></div></div><div class="wpbar-lbl" id="pLbl">0%</div></div>
+    </div>
+    <div class="weekly-grid-wrap">
+      <div class="wgrid" id="wgrid">
+        <div class="loading" style="grid-column:1/-1"><div class="spinner"></div> Carregando...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom nav bar (mobile) -->
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="bot-tab active" data-view="kanban" onclick="switchView('kanban')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="11" rx="1"/></svg>
+      Board
+    </button>
+    <button class="bot-tab" data-view="agenda" onclick="switchView('agenda')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Agenda
+    </button>
+    <button class="bot-tab" data-view="weekly" onclick="switchView('weekly')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      Semana
+    </button>
+    <button class="bot-tab" data-view="notes" onclick="switchView('notes')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M11 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2v-5"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Notas
+    </button>
+    <button class="bot-tab" data-view="hist" onclick="switchView('hist')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Histórico
+    </button>
+  </nav>
+
+</div>
+
+<!-- MODAL SIMPLIFICADO -->
+<div class="overlay" id="taskModal" style="display:none" onclick="closeModalOut(event)">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2 class="modal-title" id="modalTit">Nova tarefa</h2>
+      <button class="close-btn" onclick="closeModal()"><svg viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <input type="hidden" id="editId">
+
+    <!-- Título grande -->
+    <input class="title-input" id="tTitle" placeholder="O que precisa ser feito?">
+
+    <!-- Status -->
+    <div class="fg-sec">Status</div>
+    <div class="chip-row" id="statusChips">
+      <button class="chip sel-todo" data-s="todo" onclick="selStatus(this)">A fazer</button>
+      <button class="chip" data-s="doing" onclick="selStatus(this)">Em andamento</button>
+      <button class="chip" data-s="review" onclick="selStatus(this)">Em revisão</button>
+      <button class="chip" data-s="done" onclick="selStatus(this)">Concluído</button>
+    </div>
+
+    <!-- Categoria -->
+    <div class="fg-sec">Categoria</div>
+    <div class="cat-chip-row" id="catChips">
+      <button class="cat-chip sel-tarefas" data-c="tarefas" onclick="selCat(this)">Tarefas</button>
+      <button class="cat-chip" data-c="reuniao" onclick="selCat(this)">Reunião</button>
+      <button class="cat-chip" data-c="alinhamentos" onclick="selCat(this)">Alinhamentos</button>
+      <button class="cat-chip" data-c="urgente" onclick="selCat(this)">Urgente</button>
+    </div>
+
+    <!-- Data de entrega — picker com semanas -->
+    <div class="fg">
+      <label>Data de entrega</label>
+      <div class="datepicker-wrap" id="dpWrap">
+        <div class="dp-input" id="dpInput" onclick="toggleDp()">
+          <span id="dpDisplay">Selecionar data</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>
+        </div>
+      </div>
+      <input type="hidden" id="tDue">
+    </div>
+
+    <!-- Lembrete em dias -->
+    <div class="fg-sec">Lembrete antes da entrega</div>
+    <div class="rem-chip-row" style="margin-bottom:12px">
+      <button class="rem-chip" data-r="" onclick="selRem(this)">Sem lembrete</button>
+      <button class="rem-chip" data-r="2" onclick="selRem(this)">2 dias</button>
+      <button class="rem-chip" data-r="3" onclick="selRem(this)">3 dias</button>
+      <button class="rem-chip" data-r="4" onclick="selRem(this)">4 dias</button>
+    </div>
+
+    <!-- Observações -->
+    <div class="fg"><label>Observações</label><textarea id="tNotes" placeholder="Links, contexto, detalhes..."></textarea></div>
+
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" id="delBtn" onclick="delTask()" style="display:none;margin-right:auto">Excluir</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="saveTask()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+        Salvar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY PANEL -->
+<div class="panel-ov" id="histOv" style="display:none" onclick="closeHistOut(event)">
+  <div class="panel">
+    <div class="panel-hdr">
+      <h2 class="panel-title">Histórico de semanas</h2>
+      <button class="close-btn" onclick="closeHist()"><svg viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div id="histList"><div class="loading"><div class="spinner"></div> Carregando...</div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" style="display:none"></div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<!-- App Scripts -->
+<script src="js/utils.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/datepicker.js"></script>
+<script src="js/kanban.js"></script>
+<script src="js/agenda.js"></script>
+<script src="js/weekly.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/notes.js"></script>
+<script src="js/history.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
